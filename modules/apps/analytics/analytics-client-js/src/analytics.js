@@ -21,6 +21,7 @@ import middlewares from './middlewares/defaults';
 import defaultPlugins from './plugins/defaults';
 import {convertUTCDateToLocalDate} from './utils/date';
 import hash from './utils/hash';
+import {getItem, setItem} from './utils/storage';
 
 // Constants
 
@@ -45,28 +46,6 @@ const STORAGE_KEY_IDENTITY_HASH = 'ac_client_identity';
 const STORAGE_KEY_USER_ID = 'ac_client_user_id';
 
 let instance;
-
-const getItem = key => {
-	let data;
-	const item = localStorage.getItem(key);
-	try {
-		data = JSON.parse(item);
-	}
-	catch (e) {
-		return;
-	}
-
-	return data;
-};
-
-const setItem = (key, value) => {
-	try {
-		localStorage.setItem(key, JSON.stringify(value));
-	}
-	catch (e) {
-		return;
-	}
-};
 
 /**
  * Analytics class that is designed to collect events that are captured
