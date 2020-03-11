@@ -16,7 +16,9 @@
 		"browserslist-config-clay-components": "^2.0.3",
 		"fetch-mock": "^5.13.1",
 		"isomorphic-fetch": "^2.2.1",
-		"metal-dom": "2.16.8"
+		"metal-dom": "2.16.8",
+		"webpack": "^4.42.0",
+		"webpack-merge": "^4.2.2"
 	},
 	"homepage": "https://github.com/liferay/com-liferay-analytics#readme",
 	"jest": {
@@ -42,6 +44,7 @@
 		"build": "liferay-npm-scripts webpack",
 		"checkFormat": "liferay-npm-scripts check",
 		"format": "liferay-npm-scripts fix",
+		"start": "webpack --env=development",
 		"test": "TZ=Etc/GMT liferay-npm-scripts test"
 	},
 	"version": "1.0.0"

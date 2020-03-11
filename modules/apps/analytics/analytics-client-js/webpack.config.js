@@ -13,10 +13,27 @@
  */
 
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const buildFolder = `${__dirname}/build`;
 const buildName = 'analytics-all-min.js';
 
-module.exports = {
+const devConfig = {
+	devtool: 'inline-source-map',
+	mode: 'development',
+	optimization: {
+		minimize: false,
+	},
+	watch: true,
+};
+
+const prodConfig = {
+	mode: 'production',
+	optimization: {
+		minimize: true,
+	},
+};
+
+const config = {
 	entry: [
 		'core-js/fn/array/from',
 		'core-js/fn/array/find',
@@ -25,7 +42,6 @@ module.exports = {
 		'whatwg-fetch',
 		'./src/analytics.js',
 	],
-	mode: 'production',
 	module: {
 		rules: [
 			{
@@ -40,12 +56,13 @@ module.exports = {
 			},
 		],
 	},
-	optimization: {
-		minimize: true,
-	},
 	output: {
 		filename: buildName,
 		path: buildFolder,
 	},
 	plugins: [new webpack.optimize.ModuleConcatenationPlugin()],
+};
+
+module.exports = env => {
+	return merge(config, env === 'development' ? devConfig : prodConfig);
 };
