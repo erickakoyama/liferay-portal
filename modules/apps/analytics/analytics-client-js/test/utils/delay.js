@@ -12,14 +12,15 @@
  * details.
  */
 
-export const DEBOUNCE = 1500;
+import {getRetryDelay} from '../../src/utils/delay';
 
-/**
- * Default value in milliseconds for how often a flush task should run.
- */
-export const FLUSH_INTERVAL = 2000;
+describe('getRetryDelay', () => {
+	it('returns a delay as a function of attempt number and min/max delay', () => {
+		const min = 1000;
+		const max = 30000;
 
-/**
- * Limit of a queue localStorage size in kilobytes.
- */
-export const QUEUE_STORAGE_LIMIT = 512;
+		expect(getRetryDelay(1, min, max)).toEqual(2000);
+		expect(getRetryDelay(2, min, max)).toEqual(4000);
+		expect(getRetryDelay(30, min, max)).toEqual(max);
+	});
+});

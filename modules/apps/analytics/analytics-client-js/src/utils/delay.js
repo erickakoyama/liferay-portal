@@ -12,14 +12,15 @@
  * details.
  */
 
-export const DEBOUNCE = 1500;
-
 /**
- * Default value in milliseconds for how often a flush task should run.
+ * Calculate retry delay in milliseconds, bounded
+ * by a miniumum and maximum value.
+ *
+ * @param {Number} attemptNumber - The current attempt number.
+ * @returns {Number} - Retry delay in milliseconds.
  */
-export const FLUSH_INTERVAL = 2000;
+export const getRetryDelay = (attemptNumber, min, max) => {
+	const ms = min * Math.pow(2, attemptNumber);
 
-/**
- * Limit of a queue localStorage size in kilobytes.
- */
-export const QUEUE_STORAGE_LIMIT = 512;
+	return Math.min(ms, max);
+};
