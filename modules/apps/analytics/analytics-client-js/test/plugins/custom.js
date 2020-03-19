@@ -86,7 +86,7 @@ describe('Custom Asset Plugin', () => {
 
 			document.dispatchEvent(domContentLoaded);
 
-			const events = Analytics.events.filter(
+			const events = Analytics.getEvents().filter(
 				({eventId}) => eventId === 'assetViewed'
 			);
 
@@ -112,7 +112,7 @@ describe('Custom Asset Plugin', () => {
 
 			document.dispatchEvent(domContentLoaded);
 
-			const events = Analytics.events.filter(
+			const events = Analytics.getEvents().filter(
 				({eventId}) => eventId === 'assetViewed'
 			);
 
@@ -145,7 +145,7 @@ describe('Custom Asset Plugin', () => {
 
 			dom.triggerEvent(imageInsideCustomAsset, 'click');
 
-			expect(Analytics.events).toEqual([
+			expect(Analytics.getEvents()).toEqual([
 				expect.objectContaining({
 					applicationId,
 					eventId: 'assetClicked',
@@ -175,7 +175,7 @@ describe('Custom Asset Plugin', () => {
 
 			dom.triggerEvent(linkInsideCustomAsset, 'click');
 
-			expect(Analytics.events).toEqual([
+			expect(Analytics.getEvents()).toEqual([
 				expect.objectContaining({
 					applicationId,
 					eventId: 'assetClicked',
@@ -207,7 +207,7 @@ describe('Custom Asset Plugin', () => {
 
 			dom.triggerEvent(paragraphInsideCustomAsset, 'click');
 
-			expect(Analytics.events).toEqual([
+			expect(Analytics.getEvents()).toEqual([
 				expect.objectContaining({
 					applicationId,
 					eventId: 'assetClicked',
@@ -243,9 +243,9 @@ describe('Custom Asset Plugin', () => {
 
 			dom.triggerEvent(linkInsideCustomAsset, 'click');
 
-			expect(Analytics.events.length).toEqual(2);
+			expect(Analytics.getEvents().length).toEqual(2);
 
-			expect(Analytics.events[1]).toEqual(
+			expect(Analytics.getEvents()[1]).toEqual(
 				expect.objectContaining({
 					applicationId,
 					eventId: 'assetDownloaded',

@@ -65,7 +65,7 @@ describe('Blogs Plugin', () => {
 
 			document.dispatchEvent(domContentLoaded);
 
-			const events = Analytics.events.filter(
+			const events = Analytics.getEvents().filter(
 				({eventId}) => eventId === 'blogViewed'
 			);
 
@@ -97,7 +97,7 @@ describe('Blogs Plugin', () => {
 
 			dom.triggerEvent(imageInsideBlog, 'click');
 
-			expect(Analytics.events).toEqual([
+			expect(Analytics.getEvents()).toEqual([
 				expect.objectContaining({
 					applicationId,
 					eventId: 'blogClicked',
@@ -127,7 +127,7 @@ describe('Blogs Plugin', () => {
 
 			dom.triggerEvent(linkInsideBlog, 'click');
 
-			expect(Analytics.events).toEqual([
+			expect(Analytics.getEvents()).toEqual([
 				expect.objectContaining({
 					applicationId,
 					eventId: 'blogClicked',
@@ -156,7 +156,7 @@ describe('Blogs Plugin', () => {
 
 			dom.triggerEvent(paragraphInsideBlog, 'click');
 
-			expect(Analytics.events).toEqual([
+			expect(Analytics.getEvents()).toEqual([
 				expect.objectContaining({
 					applicationId,
 					eventId: 'blogClicked',

@@ -81,7 +81,7 @@ describe('Forms Plugin', () => {
 
 			document.dispatchEvent(domContentLoaded);
 
-			const events = Analytics.events.filter(
+			const events = Analytics.getEvents().filter(
 				({eventId}) => eventId === 'formViewed'
 			);
 
@@ -124,7 +124,7 @@ describe('Forms Plugin', () => {
 
 			form.dispatchEvent(event);
 
-			const events = Analytics.events.filter(
+			const events = Analytics.getEvents().filter(
 				({eventId}) => eventId === 'formSubmitted'
 			);
 
@@ -159,7 +159,7 @@ describe('Forms Plugin', () => {
 
 			field.dispatchEvent(new Event('focus'));
 
-			const events = Analytics.events.filter(
+			const events = Analytics.getEvents().filter(
 				({eventId}) => eventId === 'fieldFocused'
 			);
 
@@ -199,7 +199,7 @@ describe('Forms Plugin', () => {
 
 			field.dispatchEvent(new Event('blur'));
 
-			const events = Analytics.events.filter(
+			const events = Analytics.getEvents().filter(
 				({eventId}) => eventId === 'fieldBlurred'
 			);
 
