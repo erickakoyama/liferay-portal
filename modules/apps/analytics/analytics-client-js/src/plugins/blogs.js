@@ -22,8 +22,8 @@ const applicationId = 'Blog';
 
 /**
  * Returns analytics payload with Blog information.
- * @param {object} blog The blog DOM element
- * @return {object} The payload with blog information
+ * @param {Object} blog The blog DOM element
+ * @returns {Object} The payload with blog information
  */
 function getBlogPayload(blog) {
 	const {dataset} = blog;
@@ -44,8 +44,8 @@ function getBlogPayload(blog) {
 
 /**
  * Wether a Blog is trackable or not.
- * @param {object} element The Blog DOM element
- * @return {boolean} True if the element is trackable.
+ * @param {Object} element The Blog DOM element
+ * @returns {boolean} True if the element is trackable.
  */
 function isTrackableBlog(element) {
 	return element && 'analyticsAssetId' in element.dataset;
@@ -53,7 +53,7 @@ function isTrackableBlog(element) {
 
 /**
  * Sends information about Blogs scroll actions.
- * @param {object} The Analytics client instance
+ * @param {Object} The Analytics client instance
  */
 function trackBlogsScroll(analytics, blogElements) {
 	const scrollSessionId = new Date().toISOString();
@@ -80,7 +80,7 @@ function trackBlogsScroll(analytics, blogElements) {
 
 /**
  * Sends information when user scrolls on a Blog.
- * @param {object} The Analytics client instance
+ * @param {Object} The Analytics client instance
  */
 function trackBlogViewed(analytics) {
 	const blogElements = [];
@@ -115,7 +115,7 @@ function trackBlogViewed(analytics) {
 
 /**
  * Sends information when user clicks on a Blog.
- * @param {object} The Analytics client instance
+ * @param {Object} The Analytics client instance
  */
 function trackBlogClicked(analytics) {
 	return clickEvent({
@@ -130,7 +130,7 @@ function trackBlogClicked(analytics) {
 
 /**
  * Plugin function that registers listeners for Blog events
- * @param {object} analytics The Analytics client
+ * @param {Object} analytics The Analytics client
  */
 function blogs(analytics) {
 	const stopTrackingBlogClicked = trackBlogClicked(analytics);

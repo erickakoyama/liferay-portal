@@ -16,7 +16,7 @@ const applicationId = 'Page';
 
 /**
  * Sends page load information on the window load event
- * @param {object} analytics The Analytics client
+ * @param {Object} analytics The Analytics client
  */
 function onload(analytics) {
 	const perfData = window.performance.timing;
@@ -32,7 +32,7 @@ function onload(analytics) {
 
 /**
  * Sends view duration information on the window unload event
- * @param {object} analytics The Analytics client
+ * @param {Object} analytics The Analytics client
  */
 function unload(analytics) {
 	const perfData = window.performance.timing;
@@ -47,7 +47,7 @@ function unload(analytics) {
 
 /**
  * Plugin function that registers listeners against browser time events
- * @param {object} analytics The Analytics client
+ * @param {Object} analytics The Analytics client
  */
 function timing(analytics) {
 	const onLoad = onload.bind(null, analytics);

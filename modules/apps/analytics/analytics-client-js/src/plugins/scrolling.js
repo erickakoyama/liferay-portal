@@ -20,7 +20,7 @@ const applicationId = 'Page';
 
 /**
  * Plugin function that registers listener against scroll event
- * @param {object} analytics The Analytics client
+ * @param {Object} analytics The Analytics client
  */
 function scrolling(analytics) {
 	let scrollTracker = new ScrollTracker();

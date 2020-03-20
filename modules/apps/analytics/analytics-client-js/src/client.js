@@ -22,10 +22,10 @@ class Client {
 	/**
 	 * Returns a Request object with all data from the analytics instance
 	 * including the batched event objects
-	 * @param {object} analytics The Analytics instance from which the data is extracted
+	 * @param {Object} analytics The Analytics instance from which the data is extracted
 	 * @param {string} userId The userId string representation
 	 * @protected
-	 * @return {object} Body of the request to be sent to the endpoint.
+	 * @returns {Object} Parameters of the request to be sent.
 	 */
 	_getRequestParameters() {
 		const headers = new Headers();
@@ -44,8 +44,8 @@ class Client {
 	/**
 	 * Returns the Response object or a rejected Promise based on the
 	 * HTTP Response Code of the Response object
-	 * @param {object} response Response
-	 * @return {object} Promise
+	 * @param {Object} response Response
+	 * @returns {Object} Promise
 	 */
 	_validateResponse(response) {
 		if (!response.ok) {
@@ -57,9 +57,9 @@ class Client {
 
 	/**
 	 * Returns a resolved or rejected promise as per the response status or if the request times out.
-	 * @param {object} analytics The Analytics instance from which the data is extracted
+	 * @param {Object} analytics The Analytics instance from which the data is extracted
 	 * @param {string} userId The userId string representation
-	 * @return {object} Promise object representing the result of the operation
+	 * @returns {Object} Promise object representing the result of the operation
 	 */
 	sendWithTimeout({payload, timeout, url}) {
 		return Promise.race([
@@ -72,7 +72,7 @@ class Client {
 	}
 
 	/**
-	 * Send a request with given payload and url, with preset parameters.
+	 * Send a request with given payload and url.
 	 */
 	send({payload, url}) {
 		return fetch(url, {
@@ -84,7 +84,7 @@ class Client {
 	/**
 	 * Returns a promise that times out after the given time limit is exceeded
 	 * @param {number} timeout
-	 * @return {object} Promise
+	 * @returns {Object} Promise
 	 */
 	_timeout(timeout) {
 		return new Promise((_, reject) => setTimeout(reject, timeout));

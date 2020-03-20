@@ -45,7 +45,7 @@ let instance;
 class Analytics {
 	/**
 	 * Returns an Analytics instance and triggers the automatic flush loop
-	 * @param {object} config object to instantiate the Analytics tool
+	 * @param {Object} config object to instantiate the Analytics tool
 	 */
 	constructor(config) {
 		if (!instance) {
@@ -107,7 +107,7 @@ class Analytics {
 
 	/**
 	 * Creates a singleton instance of Analytics
-	 * @param {object} config Configuration object
+	 * @param {Object} config Configuration object
 	 * @example
 	 * Analytics.create(
 	 *   {
@@ -197,7 +197,7 @@ class Analytics {
 	 * Registers an event that is to be sent to Analytics Cloud
 	 * @param {string} eventId Id of the event
 	 * @param {string} applicationId ID of the application that triggered the event
-	 * @param {object} eventProps Complementary information about the event
+	 * @param {Object} eventProps Complementary information about the event
 	 */
 	send(eventId, applicationId, eventProps) {
 		if (this._isTrackingDisabled() || !applicationId) {
@@ -221,8 +221,8 @@ class Analytics {
 	 * by consumers every time an identity change is detected. If the identity is
 	 * different than the previously stored one, we will save this new identity and
 	 * send a request updating the Identity Service.
-	 * @param {object} identity A key-value pair object that identifies the user
-	 * @return {Promise} A promise resolved with the generated identity hash
+	 * @param {Object} identity A key-value pair object that identifies the user
+	 * @returns {Promise} A promise resolved with the generated identity hash
 	 */
 	setIdentity(identity) {
 		if (this._isTrackingDisabled()) {
@@ -261,7 +261,7 @@ class Analytics {
 	 * Returns a unique identifier for a user, additionally it stores
 	 * the generated token to the local storage cache and clears
 	 * previously stored identity hash.
-	 * @return {string} The generated id
+	 * @returns {string} The generated id
 	 */
 	_generateUserId() {
 		const userId = uuidv1();
@@ -315,7 +315,7 @@ class Analytics {
 	 * are stored and retrieved before generating a new one. If an anonymous
 	 * navigation is started after an identified navigation, the user ID token
 	 * is regenerated.
-	 * @return {Promise} A promise resolved with the stored or generated userId
+	 * @returns {Promise} A promise resolved with the stored or generated userId
 	 */
 	_getUserId() {
 		const newUserIdRequired = this._isNewUserIdRequired();
@@ -380,7 +380,7 @@ class Analytics {
 	 * Sends the identity information and user id to the Identity Service.
 	 * @param {Object} identity The identity information about an user.
 	 * @param {String} userId The unique user id.
-	 * @return {Promise} A promise returned by the fetch request.
+	 * @returns {Promise} A promise returned by the fetch request.
 	 */
 	_sendIdentity(identity, userId) {
 		const {channelId, dataSourceId} = this.config;

@@ -22,8 +22,8 @@ const applicationId = 'Custom';
 
 /**
  * Returns analytics payload with Custom Asset information.
- * @param {object} custom The custom asset DOM element
- * @return {object} The payload with custom information
+ * @param {Object} custom The custom asset DOM element
+ * @returns {Object} The payload with custom information
  */
 function getCustomAssetPayload({dataset}) {
 	const {
@@ -41,8 +41,8 @@ function getCustomAssetPayload({dataset}) {
 
 /**
  * Wether a Custom Asset is trackable or not.
- * @param {object} element The Custom DOM element
- * @return {boolean} True if the element is trackable.
+ * @param {Object} element The Custom DOM element
+ * @returns {boolean} True if the element is trackable.
  */
 function isTrackableCustomAsset(element) {
 	return element && 'analyticsAssetId' in element.dataset;
@@ -50,7 +50,7 @@ function isTrackableCustomAsset(element) {
 
 /**
  * Sends information when user clicks on a Custom Asset.
- * @param {object} analytics The Analytics client instance
+ * @param {Object} analytics The Analytics client instance
  */
 function trackCustomAssetDownloaded(analytics) {
 	const onClick = ({target}) => {
@@ -77,7 +77,7 @@ function trackCustomAssetDownloaded(analytics) {
 
 /**
  * Sends information about Custom Asset scroll actions.
- * @param {object} analytics The Analytics client instance
+ * @param {Object} analytics The Analytics client instance
  */
 function trackCustomAssetScroll(analytics, customAssetElements) {
 	const scrollSessionId = new Date().toISOString();
@@ -105,7 +105,7 @@ function trackCustomAssetScroll(analytics, customAssetElements) {
 /**
  * Adds an event listener for a Custom Asset submission and sends information when that
  * event happens.
- * @param {object} analytics The Analytics client instance
+ * @param {Object} analytics The Analytics client instance
  */
 function trackCustomAssetSubmitted(analytics) {
 	const onSubmit = event => {
@@ -134,7 +134,7 @@ function trackCustomAssetSubmitted(analytics) {
 
 /**
  * Sends information when user scrolls on a Custom asset.
- * @param {object} analytics The Analytics client instance
+ * @param {Object} analytics The Analytics client instance
  */
 function trackCustomAssetViewed(analytics) {
 	const customAssetElements = [];
@@ -173,7 +173,7 @@ function trackCustomAssetViewed(analytics) {
 
 /**
  * Sends information when user clicks on a Custom Asset.
- * @param {object} analytics The Analytics client instance
+ * @param {Object} analytics The Analytics client instance
  */
 function trackCustomAssetClick(analytics) {
 	return clickEvent({
@@ -188,7 +188,7 @@ function trackCustomAssetClick(analytics) {
 
 /**
  * Plugin function that registers listeners for Custom Asset events
- * @param {object} analytics The Analytics client
+ * @param {Object} analytics The Analytics client
  */
 function custom(analytics) {
 	const stopTrackingClicked = trackCustomAssetClick(analytics);
