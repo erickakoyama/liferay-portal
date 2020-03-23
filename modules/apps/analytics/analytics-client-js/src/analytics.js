@@ -65,13 +65,13 @@ class Analytics {
 		instance.identityEndpoint = `${endpointUrl}/identity`;
 		instance.delay = config.flushInterval || FLUSH_INTERVAL;
 
+		this._initializeEventQueue();
+
 		// Initializes default plugins
 
 		instance._pluginDisposers = defaultPlugins.map(plugin =>
 			plugin(instance)
 		);
-
-		this._initializeEventQueue();
 
 		this._ensureIntegrity();
 
