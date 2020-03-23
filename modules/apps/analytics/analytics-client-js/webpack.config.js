@@ -13,7 +13,6 @@
  */
 
 const webpack = require('webpack');
-const merge = require('webpack-merge');
 const buildFolder = `${__dirname}/build`;
 const buildName = 'analytics-all-min.js';
 
@@ -64,5 +63,13 @@ const config = {
 };
 
 module.exports = env => {
-	return merge(config, env === 'development' ? devConfig : prodConfig);
+	return env === 'development'
+		? {
+				...config,
+				...devConfig,
+		  }
+		: {
+				...config,
+				...prodConfig,
+		  };
 };
