@@ -63,10 +63,7 @@ class Client {
 	 */
 	sendWithTimeout({payload, timeout, url}) {
 		return Promise.race([
-			fetch(url, {
-				...this._getRequestParameters(),
-				body: JSON.stringify(payload),
-			}).then(this._validateResponse),
+			this.send({payload, url}),
 			this._timeout(timeout),
 		]);
 	}
