@@ -69,6 +69,7 @@ class MessageQueue {
 		this.name = name;
 		this.processDelay = config.processDelay || PROCESS_INTERVAL;
 		this.processFn = config.processFn;
+		this.processing = false;
 
 		if (!getItem(this.name)) {
 			setItem(this.name, []);
@@ -183,11 +184,12 @@ class MessageQueue {
 	_processMessages() {
 		const messages = this.getMessages();
 
-		if (messages.length) {
+		if (!this.processing && messages.length) {
 			const lock = new ProcessLock();
 
 			lock.acquireLock(this.name).then(success => {
 				if (success) {
+					this.processing = true;
 					const now = Date.now();
 					const queue = this.getMessages().filter(
 						({time}) => time <= now
@@ -199,11 +201,15 @@ class MessageQueue {
 								queue
 							).map(({done, item}) => this.processFn(item, done))
 						).then(() => {
-							lock.releaseLock(this.name);
+							lock.releaseLock(this.name).then(() => {
+								this.processing = false;
+							});
 						});
 					}
 					else {
-						return lock.releaseLock(this.name);
+						return lock.releaseLock(this.name).then(() => {
+							this.processing = false;
+						});
 					}
 				}
 			});
