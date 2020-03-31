@@ -16,7 +16,7 @@ import MessageQueue from '../src/messageQueue';
 import {STORAGE_KEY_MESSAGES} from '../src/utils/constants';
 import * as delayUtils from '../src/utils/delay';
 import {setItem} from '../src/utils/storage';
-import {flushPromises, getDummyEvent, wait} from './helpers';
+import {getDummyEvent, wait} from './helpers';
 
 const PROCESS_DELAY = 100;
 
@@ -51,15 +51,12 @@ const INITIAL_CONFIG = {
 	processFn: getProcessFn(true),
 };
 
-jest.useFakeTimers();
-
 describe('MessageQueue', () => {
 	let messageQueue;
 
 	afterEach(() => {
-		if (messageQueue) {
-			messageQueue.reset();
-		}
+		messageQueue.dispose();
+		messageQueue.reset();
 	});
 
 	beforeEach(() => {
@@ -69,7 +66,7 @@ describe('MessageQueue', () => {
 	it('adds an item to its queue', async () => {
 		expect(messageQueue.getMessages().length).toEqual(0);
 
-		await messageQueue.addItem(getMockMessageItem());
+		await messageQueue.addItem(getMockMessageItem('test-1'));
 
 		expect(messageQueue.getMessages().length).toEqual(1);
 	});
@@ -79,18 +76,17 @@ describe('MessageQueue', () => {
 
 		messageQueue._processMessages = spy;
 
-		await messageQueue.addItem(getMockMessageItem());
+		await messageQueue.addItem(getMockMessageItem('test-2'));
 
 		expect(spy).toHaveBeenCalledTimes(1);
 	});
 
 	it('dequeues an item after successfully processing it', async () => {
-		await messageQueue.addItem(getMockMessageItem('123'));
+		await messageQueue.addItem(getMockMessageItem('test-3'));
 
 		expect(messageQueue.getMessages().length).toEqual(1);
 
-		jest.advanceTimersByTime(PROCESS_FN_TIMEOUT);
-		await flushPromises();
+		await wait(PROCESS_DELAY * 1.3);
 
 		expect(messageQueue.getMessages().length).toEqual(0);
 	});
@@ -100,35 +96,25 @@ describe('MessageQueue', () => {
 			.spyOn(delayUtils, 'getRetryDelay')
 			.mockImplementation(() => 0);
 
-		jest.useRealTimers();
+		messageQueue.processFn = getProcessFn(false);
 
-		messageQueue = new MessageQueue(STORAGE_KEY_MESSAGES, {
-			...INITIAL_CONFIG,
-			processFn: getProcessFn(false),
-		});
-
-		await messageQueue.addItem(getMockMessageItem('123'));
+		await messageQueue.addItem(getMockMessageItem('test-4'));
 
 		await wait(PROCESS_DELAY * 2);
 
 		expect(messageQueue.getMessages().length).toEqual(0);
 
 		spy.mockRestore();
-		jest.useFakeTimers();
 	});
 
 	it('requeues an item with a scheduled execution delay after failing to process it', async () => {
-		messageQueue = new MessageQueue(STORAGE_KEY_MESSAGES, {
-			...INITIAL_CONFIG,
-			processFn: getProcessFn(false),
-		});
+		messageQueue.processFn = getProcessFn(false);
 
-		await messageQueue.addItem(getMockMessageItem('123'));
+		await messageQueue.addItem(getMockMessageItem('test-5'));
 		expect(messageQueue.getMessages().length).toEqual(1);
 		const initialProcessTime = messageQueue.getMessages()[0].time;
 
-		jest.advanceTimersByTime(PROCESS_FN_TIMEOUT * 2);
-		await flushPromises();
+		await wait(PROCESS_FN_TIMEOUT * 2);
 
 		const requeuedProcessTime = messageQueue.getMessages()[0].time;
 		expect(messageQueue.getMessages().length).toEqual(1);
@@ -140,10 +126,7 @@ describe('MessageQueue', () => {
 
 		setItem(STORAGE_KEY_MESSAGES, mockItems); // slightly larger than .5kb
 
-		messageQueue = new MessageQueue(STORAGE_KEY_MESSAGES, {
-			...INITIAL_CONFIG,
-			maxSize: 0.5,
-		});
+		messageQueue.maxSize = 0.5;
 
 		messageQueue._processMessages = jest.fn(); // we don't want processing to occur
 
@@ -162,28 +145,15 @@ describe('MessageQueue', () => {
 	});
 
 	it('only processes messages that were in the queue before processing started', async () => {
-		jest.useRealTimers();
-
-		const mockItems = [1, 2, 3].map(getMockMessage);
+		const mockItems = [7, 8, 9].map(getMockMessage);
 		setItem(STORAGE_KEY_MESSAGES, mockItems); // prefill queue
 
-		messageQueue = new MessageQueue(STORAGE_KEY_MESSAGES, {
-			...INITIAL_CONFIG,
-			processFn: (item, done) =>
-				new Promise(resolve =>
-					setTimeout(() => {
-						if (item.id === '1') {
-							messageQueue.addItem({id: 'foo'}); // add item to queue while processing first entry
-						}
-						resolve();
-					}, PROCESS_FN_TIMEOUT)
-				).then(() => done(true)),
-		});
+		messageQueue._processMessages();
 
-		await wait(PROCESS_DELAY * 2);
+		messageQueue.addItem({id: 'foo'}); // add item to queue while processing first entry
+
+		await wait(PROCESS_DELAY);
 
 		expect(messageQueue.getMessages()[0].item.id).toEqual('foo');
-
-		jest.useFakeTimers();
 	});
 });
