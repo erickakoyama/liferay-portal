@@ -15,8 +15,12 @@
 import fetchMock from 'fetch-mock';
 
 import AnalyticsClient from '../src/analytics';
-
-let EVENT_ID = 0;
+import {
+	STORAGE_KEY_EVENTS,
+	STORAGE_KEY_IDENTITY,
+	STORAGE_KEY_USER_ID,
+} from '../src/utils/constants';
+import {sendDummyEvents} from './helpers';
 
 const ANALYTICS_IDENTITY = {email: 'foo@bar.com'};
 const ENDPOINT_URL = 'https://ac-server.io';
@@ -27,31 +31,6 @@ const INITIAL_CONFIG = {
 	endpointUrl: ENDPOINT_URL,
 };
 const MOCKED_REQUEST_DURATION = 5000;
-
-// Local Storage keys
-const STORAGE_KEY_EVENTS = 'ac_client_batch';
-const STORAGE_KEY_USER_ID = 'ac_client_user_id';
-const STORAGE_KEY_IDENTITY = 'ac_client_identity';
-
-/**
- * Sends dummy events to test the Analytics API
- * @param {number} eventsNumber Number of events to send
- */
-function sendDummyEvents(client, eventsNumber = 5) {
-	for (let i = 0; i < eventsNumber; i++) {
-		const applicationId = 'test';
-
-		const eventId = EVENT_ID++;
-
-		const properties = {
-			a: 1,
-			b: 2,
-			c: 3,
-		};
-
-		client.send(eventId, applicationId, properties);
-	}
-}
 
 describe('Analytics', () => {
 	let Analytics;
