@@ -112,11 +112,11 @@ class MessageQueue {
 	}
 
 	/**
-	 * Method for clearing any scheduled flushes.
+	 * Method for clearing any scheduled processing.
 	 */
 	dispose() {
-		if (this.flushInterval) {
-			clearInterval(this.flushInterval);
+		if (this.processInterval) {
+			clearInterval(this.processInterval);
 		}
 	}
 
