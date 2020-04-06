@@ -86,7 +86,7 @@ describe('MessageQueue', () => {
 
 		expect(messageQueue.getMessages().length).toEqual(1);
 
-		await wait(PROCESS_DELAY * 1.3);
+		await wait(PROCESS_DELAY * 1.1);
 
 		expect(messageQueue.getMessages().length).toEqual(0);
 	});
@@ -100,7 +100,7 @@ describe('MessageQueue', () => {
 
 		await messageQueue.addItem(getMockMessageItem('test-4'));
 
-		await wait(PROCESS_DELAY * 2);
+		await wait(PROCESS_DELAY * 2.1);
 
 		expect(messageQueue.getMessages().length).toEqual(0);
 
@@ -114,7 +114,7 @@ describe('MessageQueue', () => {
 		expect(messageQueue.getMessages().length).toEqual(1);
 		const initialProcessTime = messageQueue.getMessages()[0].time;
 
-		await wait(PROCESS_FN_TIMEOUT * 2);
+		await wait(PROCESS_FN_TIMEOUT * 2.1);
 
 		const requeuedProcessTime = messageQueue.getMessages()[0].time;
 		expect(messageQueue.getMessages().length).toEqual(1);
