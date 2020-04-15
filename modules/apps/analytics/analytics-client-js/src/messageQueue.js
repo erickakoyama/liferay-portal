@@ -221,18 +221,15 @@ class MessageQueue {
 	 * @param {Number} attemptNumber - The number of attempts to process this item.
 	 */
 	_requeue(item, attemptNumber) {
-		const now = Date.now();
-
-		if (attemptNumber < this.maxRetries) {
-			this._enqueue(
-				{
-					attemptNumber,
-					item,
-					time: now + getRetryDelay(attemptNumber, this.maxRetries),
-				},
-				false
-			);
-		}
+		this._enqueue(
+			{
+				attemptNumber,
+				item,
+				time:
+					Date.now() + getRetryDelay(attemptNumber, this.maxRetries),
+			},
+			false
+		);
 	}
 
 	/**

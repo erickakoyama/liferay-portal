@@ -14,7 +14,6 @@
 
 import MessageQueue from '../src/messageQueue';
 import {STORAGE_KEY_MESSAGES} from '../src/utils/constants';
-import * as delayUtils from '../src/utils/delay';
 import {setItem} from '../src/utils/storage';
 import {getDummyEvent, wait} from './helpers';
 
@@ -89,22 +88,6 @@ describe('MessageQueue', () => {
 		await wait(PROCESS_DELAY * 1.1);
 
 		expect(messageQueue.getMessages().length).toEqual(0);
-	});
-
-	it('stops trying to process a message after a maximum amount of retries', async () => {
-		const spy = jest
-			.spyOn(delayUtils, 'getRetryDelay')
-			.mockImplementation(() => 0);
-
-		messageQueue.processFn = getProcessFn(false);
-
-		await messageQueue.addItem(getMockMessageItem('test-4'));
-
-		await wait(PROCESS_DELAY * 2.1);
-
-		expect(messageQueue.getMessages().length).toEqual(0);
-
-		spy.mockRestore();
 	});
 
 	it('requeues an item with a scheduled execution delay after failing to process it', async () => {
