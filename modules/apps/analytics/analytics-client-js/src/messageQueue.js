@@ -21,9 +21,6 @@ import {
 import {getRetryDelay} from './utils/delay';
 import {getItem, setItem, verifyStorageLimitForKey} from './utils/storage';
 
-const MIN_DELAY = 1000;
-const MAX_DELAY = 30000;
-
 /**
  * An Analytics Event.
  *
@@ -231,9 +228,7 @@ class MessageQueue {
 				{
 					attemptNumber,
 					item,
-					time:
-						now +
-						getRetryDelay(attemptNumber, MIN_DELAY, MAX_DELAY),
+					time: now + getRetryDelay(attemptNumber, this.maxRetries),
 				},
 				false
 			);
